@@ -1,0 +1,10 @@
+[
+    {
+        "name": "car",
+        "description": "Can fit several humans. It gets you from point A to point B."
+    },
+    {
+        "name": "motorcycle",
+        "description": "Can fit only a couple of humans, tops. It gets you from point A to point B."
+    }
+]
