@@ -6,22 +6,22 @@ import (
 	"encoding/json"
 )
 
-type VehicleJson struct {
+type VehicleConstant struct {
 	Name string
 	Description string
 }
 
 type Vehicle struct {
-	Name string
-	Description string
+	Properties VehicleConstant
 	CurrentSpeed int
+	CurrentDirection string
 }
 
-func ConvertVehicleList(vehicleJsons []VehicleJson) []Vehicle {
+func ConvertVehicleList(vehicleJsons []VehicleConstant) []Vehicle {
 	vehicles := []Vehicle{}
 
 	for _, v := range vehicleJsons {
-		vehicle := Vehicle{Name: v.Name, Description: v.Description}
+		vehicle := Vehicle{Properties: v, CurrentSpeed: 0, CurrentDirection: "N"}
 		vehicles = append(vehicles, vehicle)
 	}
 
@@ -34,13 +34,20 @@ func main() {
     if err != nil {
         panic(err)
 	}
-	var vehicleJsons []VehicleJson
-	err = json.Unmarshal(vehiclesJsonFile, &vehicleJsons)
+	var vehicleConstants []VehicleConstant
+	err = json.Unmarshal(vehiclesJsonFile, &vehicleConstants)
 	if err != nil {
         panic(err)
 	}
-	fmt.Println("VehicleJsons loaded: ", len(vehicleJsons)) 
+	fmt.Println("VehicleJsons loaded: ", len(vehicleConstants)) 
 
-	vehicles := ConvertVehicleList(vehicleJsons)
+	//convert from the constants provided in the json over to our struct that has the dynamic fields
+	vehicles := ConvertVehicleList(vehicleConstants)
 	fmt.Println("Vehicles converted from json: ", len(vehicles))
+
+	//list out the details of the vehicles
+	for i, v := range vehicles {
+		fmt.Println("Array ID: ", i, "\nVehicle Name: ", v.Properties.Name, "\nVehicle Description: ", v.Properties.Description)
+		fmt.Println("Vehicle Speed: ", v.CurrentSpeed, "\nVehicle Direction: ", v.CurrentDirection)
+	}
 }
